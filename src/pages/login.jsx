@@ -1,17 +1,43 @@
-import React, { useState } from "react";
-import { useAuth } from "../store/auth"; // Make sure path is correct
+import React, { useEffect, useState } from "react";
+import { useAuth } from "../store/auth";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { login } = useAuth();
+  const { login, isAuthenticated, user } = useAuth();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+
+  useEffect(() => {
+    console.log("Auth state changed:", { isAuthenticated, user });
+  });
+
+
+  // ✅ Auto-redirect if already logged in
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      switch (user.role) {
+        case "admin":
+          navigate("/admin/dashboard", { replace: true });
+          break;
+        case "support":
+          navigate("/support/dashboard", { replace: true });
+          break;
+        default:
+          navigate("/user/dashboard", { replace: true });
+          break;
+      }
+    }
+  }, [isAuthenticated, user, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Clear previous error
+    setError("");
 
     // Trim inputs
     const trimmedEmail = email.trim();
@@ -22,12 +48,36 @@ const Login = () => {
       return;
     }
 
-    const success = await login(trimmedEmail, trimmedPassword);
-    if (!success) {
-      setError("Invalid credentials");
-    } else {
+    try {
+      setLoading(true);
+      const user = await login(trimmedEmail, trimmedPassword);
+
+      if (!user) {
+        setError("Invalid email or password");
+        return;
+      }
+
+      // ✅ Redirect by role
+      switch (user.role) {
+        case "admin":
+          navigate("/admin/dashboard");
+          break;
+        case "support":
+          navigate("/support/dashboard");
+          break;
+        default:
+          navigate("/user/dashboard");
+          break;
+      }
+
+      // Reset fields
       setEmail("");
       setPassword("");
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+      console.error("Login error:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -75,6 +125,7 @@ const Login = () => {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-3 py-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               placeholder="Enter your email"
+              disabled={loading}
             />
           </div>
 
@@ -88,6 +139,7 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full px-3 py-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 placeholder="Enter your password"
+                disabled={loading}
               />
               <button
                 type="button"
@@ -111,9 +163,13 @@ const Login = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-medium"
+            disabled={loading}
+            className={`w-full py-2 rounded-lg font-medium text-white ${loading
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-indigo-600 hover:bg-indigo-700"
+              }`}
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 

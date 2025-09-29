@@ -137,12 +137,12 @@
 
 // export default SignUp;
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "../components/common/Modal";
 import { useAuth } from "../store/auth";
 
 const SignUp = () => {
-  const { signup } = useAuth(); // use signup method from context
+  const { signup, isAuthenticated, user } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -151,6 +151,24 @@ const SignUp = () => {
     password: "",
   });
   const [error, setError] = useState("");
+
+   // ✅ Auto-redirect if already logged in
+    useEffect(() => {
+      if (isAuthenticated && user) {
+        switch (user.role) {
+          case "admin":
+            navigate("/admin/dashboard", { replace: true });
+            break;
+          case "support":
+            navigate("/support/dashboard", { replace: true });
+            break;
+          default:
+            navigate("/user/dashboard", { replace: true });
+            break;
+        }
+      }
+    }, [isAuthenticated, user, navigate]);
+  
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

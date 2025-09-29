@@ -1,17 +1,19 @@
-import React, { createContext, useContext, useReducer } from "react";
-import { loginUser as apiLoginUser, signupUser as apiSignupUser } from "../apis/auth"; // import signupUser
+import React, { createContext, useContext, useReducer, useEffect } from "react";
+import { loginUser as apiLoginUser, signupUser as apiSignupUser } from "../apis/auth";
 
 const initialAuthState = {
-  user: null,          // full user object
-  isAuthenticated: false,
+  user: JSON.parse(localStorage.getItem("user")) || null, // read from localStorage
+  isAuthenticated: !!localStorage.getItem("user"),        // true if user exists
 };
 
 function authReducer(state, action) {
   switch (action.type) {
     case "LOGIN":
+      localStorage.setItem("user", JSON.stringify(action.payload)); // store user
       return { ...state, user: action.payload, isAuthenticated: true };
     case "LOGOUT":
-      return { ...initialAuthState };
+      localStorage.removeItem("user"); // remove on logout
+      return { ...initialAuthState, user: null, isAuthenticated: false };
     default:
       return state;
   }
@@ -27,19 +29,19 @@ export function AuthProvider({ children }) {
     const user = await apiLoginUser(email, password);
     if (user) {
       dispatch({ type: "LOGIN", payload: user });
-      return true;
+      return user; // return full user object
     }
-    return false;
+    return null; // login failed
   };
 
   // Signup method
   const signup = async ({ username, email, password, role = "user" }) => {
     const user = await apiSignupUser({ username, email, password, role });
     if (user) {
-      dispatch({ type: "LOGIN", payload: user }); // store in context immediately
-      return true; // signup + login success
+      dispatch({ type: "LOGIN", payload: user });
+      return user;
     }
-    return false; // signup failed
+    return null; // signup failed
   };
 
   const logout = () => dispatch({ type: "LOGOUT" });
