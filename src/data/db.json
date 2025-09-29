@@ -1,0 +1,147 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "john_doe",
+      "email": "john@example.com",
+      "password": "123456",
+      "role": "user",
+      "status": "Available",
+      "created_at": "2025-09-28T10:00:00Z"
+    },
+    {
+      "id": "2",
+      "username": "jane_smith",
+      "email": "jane@example.com",
+      "password": "password",
+      "role": "support",
+      "status": "Available",
+      "created_at": "2025-09-28T10:05:00Z"
+    },
+    {
+      "id": "3",
+      "username": "mohamed_ali",
+      "email": "mohamed@example.com",
+      "password": "admin123",
+      "role": "admin",
+      "status": "Available",
+      "created_at": "2025-09-28T10:10:00Z"
+    },
+    {
+      "id": "4",
+      "username": "sara_lee",
+      "email": "sara@example.com",
+      "password": "qwerty",
+      "role": "user",
+      "status": "Available",
+      "created_at": "2025-09-28T10:15:00Z"
+    },
+    {
+      "id": "5",
+      "username": "ahmed_khan",
+      "email": "ahmed@example.com",
+      "password": "support123",
+      "role": "support",
+      "status": "Away",
+      "created_at": "2025-09-28T10:20:00Z"
+    },
+    {
+      "id": "820c",
+      "username": "houssambou81",
+      "email": "houssambouajjioune1998@gmail.com",
+      "password": "123456",
+      "role": "user",
+      "created_at": "2025-09-28T21:40:11.010Z"
+    },
+    {
+      "id": "7816",
+      "username": "houssambou811",
+      "email": "houssambouajjioune19981@gmail.com",
+      "password": "1234561",
+      "role": "user",
+      "created_at": "2025-09-28T21:41:27.939Z"
+    }
+  ],
+  "tickets": [
+    {
+      "id": "1",
+      "title": "Login issue",
+      "description": "Cannot log in with correct credentials",
+      "status": "open",
+      "user_id": 1,
+      "created_at": "2025-09-28T11:00:00Z"
+    },
+    {
+      "id": "2",
+      "title": "Password reset not working",
+      "description": "I don’t receive reset email",
+      "status": "open",
+      "user_id": 1,
+      "created_at": "2025-09-28T11:20:00Z"
+    },
+    {
+      "id": "3",
+      "title": "UI bug on mobile",
+      "description": "Buttons overlap on small screens",
+      "status": "resolved",
+      "user_id": 4,
+      "created_at": "2025-09-28T11:30:00Z"
+    },
+    {
+      "id": "4",
+      "title": "Feature request",
+      "description": "Add dark mode support",
+      "status": "open",
+      "user_id": 4,
+      "created_at": "2025-09-28T11:40:00Z"
+    },
+    {
+      "id": "5",
+      "title": "App crash",
+      "description": "App crashes when clicking on profile",
+      "status": "in-progress",
+      "user_id": 1,
+      "created_at": "2025-09-28T11:50:00Z"
+    },
+    {
+      "id": "6",
+      "title": "Slow performance",
+      "description": "App loads too slowly on first login",
+      "status": "open",
+      "user_id": 4,
+      "created_at": "2025-09-28T12:00:00Z"
+    },
+    {
+      "id": "7",
+      "title": "Notification bug",
+      "description": "Notifications are duplicated",
+      "status": "closed",
+      "user_id": 1,
+      "created_at": "2025-09-28T12:10:00Z"
+    },
+    {
+      "id": "8",
+      "title": "Broken link",
+      "description": "Help page link returns 404",
+      "status": "resolved",
+      "user_id": 4,
+      "created_at": "2025-09-28T12:20:00Z"
+    },
+    {
+      "id": "9",
+      "title": "Security concern",
+      "description": "Session doesn’t expire after logout",
+      "status": "open",
+      "user_id": 1,
+      "created_at": "2025-09-28T12:30:00Z"
+    },
+    {
+      "id": "10",
+      "title": "Translation issue",
+      "description": "Some texts are not translated in French",
+      "status": "open",
+      "user_id": 4,
+      "created_at": "2025-09-28T12:40:00Z"
+    }
+  ]
+}
