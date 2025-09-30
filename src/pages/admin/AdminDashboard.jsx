@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import DashboardLayout from '../../components/layout/DashboardLayout';
+import AdminDashboardLayout from '../../components/layout/AdminDashboardLayout'
 import { api } from '../../apis/ticket';
 import Table from '../../components/common/Table';
 import EditModal from '../../components/common/EditModal';
@@ -62,13 +62,14 @@ export default function AdminDashboard() {
     const onEditTicket = (ticket) => setEditTicket(ticket);
 
     const saveTicketEdit = async (patch) => {
-        const updated = await api.updateTicket(editTicket.id, patch);
-        setTickets(prev => prev.map(t => t.id === updated.id ? updated : t));
-        setEditTicket(null);
-    };
+    const updated = await api.updateTicket(editTicket.id, patch);
+    setTickets(prev => prev.map(t => t.id === updated.id ? updated : t));
+    setEditTicket(null);
+};
+
 
     return (
-        <DashboardLayout title="Admin Dashboard">
+        <AdminDashboardLayout title="Admin Dashboard">
             <div className="grid gap-4">
                 <section>
                     <h3>Users</h3>
@@ -97,6 +98,6 @@ export default function AdminDashboard() {
             />
 
             <DeleteConfirm open={!!deleteUser} onClose={() => setDeleteUser(null)} onConfirm={confirmUserDelete} itemName="user" />
-        </DashboardLayout>
+        </AdminDashboardLayout>
     );
 }
